@@ -7,6 +7,13 @@ import db
 
 patient collection
 db.patients
+{'patients': [
+    patient: id, records: [record]
+    where record: {"name", "type", "value"}
+}
+
+db.access
+{"id": 
 
 #Dependencies
 ##Python

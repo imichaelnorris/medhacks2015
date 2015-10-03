@@ -1,12 +1,91 @@
 <html>
 <head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<link rel="stylesheet" type="text/css"
-href="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.css"/>
- 
 <script type="text/javascript"
- src="https://cdn.datatables.net/r/dt/dt-1.10.9/datatables.min.js"></script>
+ src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css"/>
+
+<script src="lib/jquery.sumoselect.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+href="lib/sumoselect.css"/>
+
+
+<style>
+
+#main {
+    padding-top: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+</style>
+
 </head>
-hi
+
+View as<!--right side-->
+<script id="permissionSelect" type="text/template">
+<select class="view-select">
+ <option value="patient">patient</option>
+ <option value="physician">physician</option>
+ <option value="research: Cardiac">research: Cardiac</option>
+ <option value="research: Cancer">research: Cancer</option>
+ <option value="research: Public Health">research: Public Health</option>
+</select>
+</script>
+<div id="viewer"></div>
+
+<div id="main">
+<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Record Type</th>
+                <th>Value</th>
+                <th>Permissions</th>
+            </tr>
+        </thead>
+ 
+        <tfoot>
+            <tr>
+                <th>Record Type</th>
+                <th>Value</th>
+                <th>Permissions</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    $("#viewer").html($("#permissionSelect").html());
+    $('#example').DataTable( {
+        "ajax": "http://localhost:5000/get_patient",
+        "columns": [
+            { "data": "name" },
+            { "render": function(data,type,row) { 
+                    //console.log(row); return "" + row;
+                    if (row.type === 'text') {
+                        return row.value;
+                    } else if (row.type === 'img') {
+                        return '<img src="data:image/png;base64,' + 
+                        row.value + '" alt="IMG"/>';
+                    } else {
+                        return "INVALID RECORD TYPE";
+                    }
+                }
+            },
+            { "render": function(data, type, row) {
+                //$("#
+                //Decrypt record
+                var t = $($("#permissionSelect").html());
+                t.SumoSelect();
+                return t.html();
+                }
+            },
+        ]
+    } );
+} );
+</script>
 
 </html>
