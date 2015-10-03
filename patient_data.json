@@ -1,5 +1,7 @@
-{"000":
-    [
+{"patients": [
+    {
+        "id": "000",
+        "records": [
         {"name": "ID", "type": "text", "value": "000"},
         {"name": "name", "type": "text", "value": "Billy Bob"},
         {"name": "age", "type": "text", "value": "20"},
@@ -9,5 +11,7 @@
         {"name": "diastolic blood pressure", "type": "text", "value": "90"},
         {"name": "Medication", "type":"text", "value":"lisinopril oral"},
         {"name": "Xray", "type":"img", "value":"https://www.smm.org/heart/lessons/jpgs/full/xray.jpg"}
+        ]
+    }
     ]
 }
