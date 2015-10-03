@@ -1,0 +1,30 @@
+from flask import Flask, request, session, g, redirect, url_for, \
+     abort, render_template, flash, Response
+
+import db
+import json
+
+app = Flask(__name__, static_path='', static_url_path='', static_folder='')
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+#@app.route('/<path:path>')
+#def serve_lib(path):
+#    return app.send_static_file(path)
+
+@app.route('/get_patient', methods=['GET'])
+def get_patient():
+    #if not session.get('logged_in'):
+    #    abort(401)
+    patient = db.patients.find_one()
+    del patient['_id']
+    patient['data'] = patient['records']
+    #print json.dumps(patient)
+    #return "3"
+    resp = Response(json.dumps(patient),status=200, mimetype='application/json')
+    return resp
+
+if __name__ == '__main__':
+    app.run(debug=True)
