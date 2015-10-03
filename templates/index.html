@@ -37,7 +37,7 @@ View as<!--right side-->
 <div id="viewer"></div>
 
 <div id="main">
-<table id="example" class="display" cellspacing="0" width="100%">
+<table id="patientTable" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Record Type</th>
@@ -59,7 +59,16 @@ View as<!--right side-->
 <script>
 $(document).ready(function() {
     $("#viewer").html($("#permissionSelect").html());
-    $('#example').DataTable( {
+    $('#patientTable').DataTable( {
+        "fnDrawCallback": function( nRow, aData, iDataIndex ) {
+            // Bold the grade for all 'A' grade browsers
+            //if ( aData[4] == "A" )
+            //{
+                //$('td:eq(4)', nRow).html( '<b>A</b>' );
+                $("#patientTable .view-select").attr("multiple", "multiple");//.SumoSelect();
+                $("#patientTable .view-select").SumoSelect();
+            //}
+        },
         "ajax": "http://localhost:5000/get_patient",
         "columns": [
             { "data": "name" },
@@ -78,9 +87,10 @@ $(document).ready(function() {
             { "render": function(data, type, row) {
                 //$("#
                 //Decrypt record
-                var t = $($("#permissionSelect").html());
-                t.SumoSelect();
-                return t.html();
+                //var t = $($("#permissionSelect").html());
+                //t.SumoSelect();
+                //return t.html();
+                return $("#permissionSelect").html();
                 }
             },
         ]
