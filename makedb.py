@@ -1,16 +1,15 @@
 import json
 from skimage import io
 import base64
+import db
 f = open('patient_data.json')
 
 data = json.loads(f.read())
-
-for key in data:
-    if data[key]['type'] == 'img':
-        link = data[key]['value']
+for record in data['000']:
+    if record['type'] == 'img':
+        link = record['value']
         img = io.imread(link)
 
+        record['value'] = base64.b64encode(img)
 
-        data[key]['value'] = base64.b64encode(img)
-
-print(data)
+db.patients.insert(data)
