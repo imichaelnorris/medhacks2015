@@ -29,18 +29,18 @@ def get_patient():
 @app.route('/access', methods=['POST'])
 def update_access():
     #print(
-    rec = json.loads(request.form)
-    print(rec.keys())
-    #for row in rec[:
-    #    print row
-    record = int(json.loads(request.form['record']))
-    people = json.loads(request.form['access'])
-    keys = json.loads(request.form['keys'])
+    rec = request.get_json()
     from_mongo = db.patients.find_one()
-    people = sorted(list(set( list(people) + ['patient', 'physician'])))
-    from_mongo['records'][record]['access'] = people
+    for index, row in enumerate(rec['records']):
+        people = row['access']
+        keys = row['keys']
+        people = sorted(list(set( list(people) + ['patient', 'physician'])))
+        row['access'] = people
+        #print(from_mongo)
+        from_mongo['records'][index] = row
     x = from_mongo
-    patients.update({'_id': x['_id']}, {"$set": x}, upsert=False)
+    print(x['records'][0]['value'])
+    db.patients.update({'_id': x['_id']}, {"$set": x}, upsert=False)
     #$.ajax({method: "POST", url: "http://localhost:5000/rekey",
     #data:JSON.stringify({"access": [1,2,3], "record": 0})})
     return ""
