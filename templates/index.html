@@ -13,7 +13,7 @@
 <script src="js/sweet.js"></script>
 
 <link rel="stylesheet" type="text/css" href="lib/sumoselect.css"/>
-<link href="../css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 <link href='https://fonts.googleapis.com/css?family=PT+Sans:700italic' rel='stylesheet' type='text/css'>
 
 <style>
@@ -36,13 +36,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <img src="../Logo.png" id = "logo">
+      <img src="Logo.png" id = "logo">
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right" >
         <li ><a href="#">Home<span class="sr-only">(current)</span></a></li>
-        <li class="active"><a href="#">Portal</a></li>
+        <li><a href="#">Portal</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -57,9 +57,20 @@
     </div>
   </div>
 </nav>    
-<button id="update" onclick="update()">Update</button>
-View as<!--right side-->
-<div id="viewer"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-1">
+        <button id="update" onclick="update()">Update</button>
+    </div>
+    <div class="col-md-1"></div>
+
+    <div class="col-md-4">
+        View as:
+        <div id="viewer"></div>
+    </div>
+
+  </div>
+</div>
 <script id="permissionSelect" type="text/template">
 <select class="view-select">
  <option value="patient">patient</option>

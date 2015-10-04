@@ -4,6 +4,10 @@ body {
     margin: 20px 80px;   
 }
 
+.navbar-header {
+    padding-top: 10px;
+}
+
 header h1 {
     font-family: 'PT Sans', sans-serif;
     font-style: italic;
@@ -19,5 +23,4 @@ header h1 {
     width: 90px;
     height: 40px;
     display:block;
-    float: right;
 }   
