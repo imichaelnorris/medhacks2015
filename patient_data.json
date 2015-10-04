@@ -2,15 +2,20 @@
     {
         "id": "000",
         "records": [
-        {"name": "ID", "type": "text", "value": "000"},
-        {"name": "name", "type": "text", "value": "Billy Bob"},
-        {"name": "age", "type": "text", "value": "20"},
-        {"name": "weight (pounds)", "type": "text", "value": "190"},
-        {"name": "height (inches)", "type": "text", "value": "120"},
-        {"name": "systolic blood pressure", "type": "text", "value": "150" },
-        {"name": "diastolic blood pressure", "type": "text", "value": "90"},
-        {"name": "Medication", "type":"text", "value":"lisinopril oral"},
-        {"name": "Xray", "type":"img", "value":"https://www.smm.org/heart/lessons/jpgs/full/xray.jpg"}
+            {"name": "name", "type": "text", "value": "James Smith"},
+            {"name": "age", "type": "text", "value": "20"},
+            {"name": "weight (pounds)", "type": "text", "value": "204"},
+            {"name": "height (inches)", "type": "text", "value": "69"},
+            {"name": "systolic blood pressure", "type": "text", "value": "151" },
+            {"name": "diastolic blood pressure", "type": "text", "value": "95"},
+            {"name": "medication", "type":"text", "value":"lisinopril oral"},
+            {"name": "medication", "type":"text", "value":"sertraline (Zoloft) antidepressent"},
+            {"name": "medication", "type":"text", "value":"Spironolactone (aldosterone inhibitor"},
+            {"name": "frequent smoker (Y/N)", "type" : "text", "value": "Y"},
+            {"name": "allergies", "type": "text", "value": "ragweed"},
+            {"name" : "disease", "type": "text", "value" : "hypertension"},
+            {"name" : "electrocardiogram", "type": "img", "value" : "https://physionet.org/physiobank/charts/nifecgdb.png"},
+            {"name": "Xray", "type":"img", "value":"https://www.smm.org/heart/lessons/jpgs/full/xray.jpg"}         
         ]
     }
     ]
