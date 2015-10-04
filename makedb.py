@@ -22,5 +22,8 @@ for patient in data['patients']:
         record['keys'] = ['0', '0']
         record['access'] = ['patient', 'physician']
         record['index'] = str(index)
+        record['encrypted'] = False
+
         patient['records'][index] = record
     db.patients.insert(patient)
+
