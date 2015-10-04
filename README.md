@@ -1,6 +1,9 @@
 # medhacks2015
 [http://wecrypthealth.com/](http://wecrypthealth.com/)
+
 [alternative link](http://disagree.io/)
+
+
 Elevator Pitch:
 We believe patients should have control of their own medical data.  This means,
 among other empowering tools, giving them tools to share their records with 
