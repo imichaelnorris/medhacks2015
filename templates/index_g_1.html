@@ -96,10 +96,9 @@ $(document).ready(function() {
     $("#viewer").html($("#permissionSelect").html());
 
     $(".view-select").slice(0,1).change(function() {
-        //console.log("reload");
+        console.log("reload");
         table.ajax.reload();
     });
-
     table = $('#patientTable').DataTable( {
         "aaSorting": [],
         "fnDrawCallback": function( nRow, aData, iDataIndex ) {
@@ -117,16 +116,16 @@ $(document).ready(function() {
             { "render": function(data,type,row) { 
                 var context = $(".view-select").slice(0,1).val();
                     var canAccess = false;
-                    //console.log(context);
+                    console.log(context);
                     for (var i = 0; i < row.access.length; ++i) {
-                        //console.log(row.access[i]);
+                        console.log(row.access[i]);
                         if (row.access[i] === context) {
                             canAccess = true;
                         }
                     }
-                    //if (!canAccess) {
-                    //    return "X";
-                    //}
+                    if (!canAccess) {
+                        return "X";
+                    }
                     //console.log(row); return "" + row;
                     if (row.type === 'text') {
                         return row.value;
@@ -190,9 +189,6 @@ function update() {
         records.push(row);
     });
     console.log(records);
-    var d = {'id': '000', 'records': records};
-    $.ajax({url: "http://localhost:5000/access", data: JSON.stringify(d), 
-            contentType: "application/json", type:"POST"});
 }
 </script>
         <script type="text/javascript" src="../js/materialize.min.js"></script>

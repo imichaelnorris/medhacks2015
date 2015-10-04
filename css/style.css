@@ -1,0 +1,26 @@
+/* Custom Stylesheet */
+
+nav .brand-logo {
+  color: #ffffff;
+}
+
+#nav_item {
+    background-color: #008E7f;
+}
+
+body {
+    background-color: #98D8D1;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+
+main {
+    flex: 1 0 auto;
+}
+
+#footer_elem {
+    background-color : #008E7f;
+}
+      
