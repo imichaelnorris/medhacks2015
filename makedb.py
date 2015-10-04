@@ -26,3 +26,4 @@ for patient in data['patients']:
 
         patient['records'][index] = record
     db.patients.insert(patient)
+
