@@ -1,7 +1,8 @@
 var table = null;
 
 var the_contexts = ["patient",
-"physician",
+"pharmacist",
+"primary physician",
 "research: Cancer",
 "research: Cardiac",
 "research: Public Health"];
