@@ -34,7 +34,7 @@ def update_access():
     for index, row in enumerate(rec['records']):
         people = row['access']
         keys = row['keys']
-        people = sorted(list(set( list(people) + ['patient', 'physician'])))
+        people = sorted(list(set( list(people) + ['patient'])))
         row['access'] = people
         #print(from_mongo)
         from_mongo['records'][index] = row

@@ -19,7 +19,7 @@ for patient in data['patients']:
             img.save(f, format='png')
 
             record['value'] = base64.b64encode(f.getvalue())
-        record['key'] = '0'
+        record['keys'] = ['0', '0']
         record['access'] = ['patient', 'physician']
         record['index'] = str(index)
         patient['records'][index] = record

@@ -31,6 +31,33 @@ $(document).ready(function() {
                     if (!canAccess) {
                         //return "X";
                     }
+
+                    var context = $(".view-select").slice(0,1).val();
+                    var found = false;
+                    var public_key = 0;
+                    console.log('hi');
+
+                    for (var i = 0; i < row.access.length; ++i) {
+                        if (row.access[i] === context) {
+                            found = true; 
+                            public_key = row.keys[i];
+                        }
+                    }
+                    console.log(row.keys);
+
+                    if (found && public_key != 0 && !('decrypted' in row)) {
+                        console.log(public_key);
+                        var key = sjcl.decrypt(context, public_key);
+                        console.log(row.name);
+                        console.log('key ' + key+" "+row.value);
+                        row.value = sjcl.decrypt(key, row.value);
+                        row['decrypted'] = true;
+                    }
+                    //show encrypted stuff only if it's the patient
+                    if (!('decrypted' in row) && context!=='patient') {
+                        return 'X';
+                    }
+
                     if (row.type === 'text') {
                         return row.value;
                     } else if (row.type === 'img') {
@@ -70,7 +97,7 @@ function encrypt(data, people) {
         keys.push(sjcl.encrypt(people[i], msg_key));
     }
     return {"data": sjcl.encrypt(msg_key, data),
-            "keys": keys, "key": msg_key};
+            "keys": keys};
 }
 function update() {
     var i = 1;
@@ -81,16 +108,25 @@ function update() {
         //who can access the data
         var accessors = $(".view-select").slice(i, i+1).val();
         row['access'] = accessors;
-        var encrypted = encrypt(row['value'], accessors);
+        console.log(row['access']);
+        var temp = row['value'];
+        if ('encrypted' in row) {
+            temp = sjcl.decrypt('patient', temp);
+        }
+
+        var encrypted = encrypt(temp, accessors);
         var encryptedData = encrypted.data;
+        //console.log(encryptedData);
         var keys = encrypted.keys;
         row['keys'] = keys;
-        row['encryptedData'] = encryptedData;
-        row['key'] = encrypted.key;
+        console.log(row['keys']);
+        row['value'] = encryptedData;
         i += 1;
         records.push(row);
     });
+    //console.log(records[0].value);
     rec['records'] = records;
+    rec['encrypted'] = true;
     rec = JSON.stringify(rec);
     $.ajax({contentType: "application/json", url: "http://localhost:5000/access", type:"POST", data: rec});
     //console.log(rec);
