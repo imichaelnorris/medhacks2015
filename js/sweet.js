@@ -1,8 +1,15 @@
-var table;
+var table = null;
+
+var the_contexts = ["patient",
+"physician",
+"research: Cardiac",
+"research: Cancer",
+"research: Public Health"];
+
 $(document).ready(function() {
     $("#viewer").html($("#permissionSelect").html());
     $(".view-select").slice(0,1).change(function() {
-        console.log("reload");
+        //console.log("reload");
         table.ajax.reload();
     });
     table = $('#patientTable').DataTable( {
@@ -15,6 +22,22 @@ $(document).ready(function() {
                 //$('td:eq(4)', nRow).html( '<b>A</b>' );
                 $("#patientTable .view-select").attr("multiple", "multiple");//.SumoSelect();
                 $("#patientTable .view-select").SumoSelect();
+                if (table === null) { return; }
+                table.data().each(function(value, row, column) {
+                    var j = row;
+                    var acc = {};
+                    row = value;
+                    for (var i = 0; i < row.access.length; ++i) {
+                        acc[row.access[i]] = true;
+                    }
+                    for (var i = 0; i < the_contexts.length; ++i) {
+                        if (the_contexts[i] in acc) {
+                            //for (var j = 0; j < $("#patientTable .view-select").length; ++j) {
+                                $("#patientTable .view-select")[j].sumo.selectItem(i);
+                            //}
+                        }
+                    }
+                });
             //}
         },
         "ajax": "http://localhost:5000/get_patient",
@@ -35,7 +58,7 @@ $(document).ready(function() {
                     var context = $(".view-select").slice(0,1).val();
                     var found = false;
                     var public_key = 0;
-                    console.log('hi');
+                    //console.log('hi');
 
                     for (var i = 0; i < row.access.length; ++i) {
                         if (row.access[i] === context) {
@@ -43,18 +66,29 @@ $(document).ready(function() {
                             public_key = row.keys[i];
                         }
                     }
-                    console.log(row.keys);
+                    //console.log(row.keys);
+                    if (!found) { return 'X'; }
 
-                    if (found && public_key != 0 && !('decrypted' in row)) {
-                        console.log(public_key);
-                        var key = sjcl.decrypt(context, public_key);
-                        console.log(row.name);
-                        console.log('key ' + key+" "+row.value);
-                        row.value = sjcl.decrypt(key, row.value);
-                        row['decrypted'] = true;
+                    if (found && public_key != 0 && row['encrypted']) {
+                        //console.log(public_key);
+                        try {
+                            var key = sjcl.decrypt(context, public_key);
+                        } catch (err) {
+                            key = '0';
+                        }
+                        //console.log(row.name);
+                        //console.log('key ' + key+" "+row.value);
+                        var thetemp = row.value;
+                        try {
+
+                            row.value = sjcl.decrypt(key, row.value);
+                        } catch (err) {
+                            row.value = thetemp;
+                        }
+                        row['tableEncrypted'] = false;
                     }
                     //show encrypted stuff only if it's the patient
-                    if (!('decrypted' in row) && context!=='patient') {
+                    if (row['tableEncrypted'] && context!=='patient') {
                         return 'X';
                     }
 
@@ -108,10 +142,16 @@ function update() {
         //who can access the data
         var accessors = $(".view-select").slice(i, i+1).val();
         row['access'] = accessors;
-        console.log(row['access']);
+        //console.log(row['access']);
         var temp = row['value'];
-        if ('encrypted' in row) {
-            temp = sjcl.decrypt('patient', temp);
+
+        //we need to rekey for the patient
+        if (row['encrypted']) {
+            try {
+                temp = sjcl.decrypt('patient', temp);
+            } catch (err) {
+                temp = row['value'];
+            }
         }
 
         var encrypted = encrypt(temp, accessors);
@@ -119,9 +159,10 @@ function update() {
         //console.log(encryptedData);
         var keys = encrypted.keys;
         row['keys'] = keys;
-        console.log(row['keys']);
+        //console.log(row['keys']);
         row['value'] = encryptedData;
         i += 1;
+        row['encrypted'] = true;
         records.push(row);
     });
     //console.log(records[0].value);
