@@ -2,8 +2,8 @@ var table = null;
 
 var the_contexts = ["patient",
 "physician",
-"research: Cardiac",
 "research: Cancer",
+"research: Cardiac",
 "research: Public Health"];
 
 $(document).ready(function() {
@@ -64,11 +64,15 @@ $(document).ready(function() {
                     if (!found) { return 'X'; }
                     if (found && row['encrypted']) {
                         try {
-                            var key = sjcl.decrypt(context,
-                            public_key);
-                            console.log(key);
+                            console.log(context);
+                            if (row['index'] == 0) {
+                                console.log(public_key);
+                            }
+                            var key = sjcl.decrypt(context, public_key);
                         } catch (err) {
-                            key = 0;
+                            console.log(row['index']);
+                            console.log("err");
+                            return 'X';
                         }
                         var thetemp = row.value;
                         try {
@@ -163,4 +167,5 @@ function update() {
     rec['encrypted'] = true;
     rec = JSON.stringify(rec);
     $.ajax({contentType: "application/json", url: "http://localhost:5000/access", type:"POST", data: rec});
+    table.ajax.reload();
 }
