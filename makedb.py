@@ -10,7 +10,7 @@ f = open('patient_data.json')
 data = json.loads(f.read())
 db.patients.remove()
 for patient in data['patients']:
-    for record in patient['records']:
+    for index, record in enumerate(patient['records']):
         if record['type'] == 'img':
             link = record['value']
             img = io.imread(link)
@@ -19,4 +19,8 @@ for patient in data['patients']:
             img.save(f, format='png')
 
             record['value'] = base64.b64encode(f.getvalue())
+        record['key'] = '0'
+        record['access'] = ['patient', 'physician']
+        record['index'] = str(index)
+        patient['records'][index] = record
     db.patients.insert(patient)
