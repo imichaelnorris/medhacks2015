@@ -6,6 +6,7 @@ $(document).ready(function() {
         table.ajax.reload();
     });
     table = $('#patientTable').DataTable( {
+         "iDisplayLength": 50,
         "aaSorting": [],
         "fnDrawCallback": function( nRow, aData, iDataIndex ) {
             // Bold the grade for all 'A' grade browsers
