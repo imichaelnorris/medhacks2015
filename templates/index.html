@@ -8,6 +8,7 @@
 href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css"/>
 
 <script src="lib/jquery.sumoselect.min.js"></script>
+<script src="lib/sjcl.js"></script>
 
 <link rel="stylesheet" type="text/css"
 href="lib/sumoselect.css"/>
@@ -24,7 +25,9 @@ href="lib/sumoselect.css"/>
 
 </head>
 
+<button onclick="update()">Refresh</button><br>
 View as<!--right side-->
+<div id="viewer"></div>
 <script id="permissionSelect" type="text/template">
 <select class="view-select">
  <option value="patient">patient</option>
@@ -34,7 +37,6 @@ View as<!--right side-->
  <option value="research: Public Health">research: Public Health</option>
 </select>
 </script>
-<div id="viewer"></div>
 
 <div id="main">
 <table id="patientTable" class="display" cellspacing="0" width="100%">
@@ -57,9 +59,16 @@ View as<!--right side-->
 </div>
 
 <script>
+var table;
 $(document).ready(function() {
     $("#viewer").html($("#permissionSelect").html());
-    $('#patientTable').DataTable( {
+
+    $(".view-select").slice(0,1).change(function() {
+        console.log("reload");
+        table.ajax.reload();
+    });
+    table = $('#patientTable').DataTable( {
+        "aaSorting": [],
         "fnDrawCallback": function( nRow, aData, iDataIndex ) {
             // Bold the grade for all 'A' grade browsers
             //if ( aData[4] == "A" )
@@ -73,6 +82,18 @@ $(document).ready(function() {
         "columns": [
             { "data": "name" },
             { "render": function(data,type,row) { 
+                var context = $(".view-select").slice(0,1).val();
+                    var canAccess = false;
+                    console.log(context);
+                    for (var i = 0; i < row.access.length; ++i) {
+                        console.log(row.access[i]);
+                        if (row.access[i] === context) {
+                            canAccess = true;
+                        }
+                    }
+                    if (!canAccess) {
+                        return "X";
+                    }
                     //console.log(row); return "" + row;
                     if (row.type === 'text') {
                         return row.value;
@@ -96,6 +117,47 @@ $(document).ready(function() {
         ]
     } );
 } );
+
+/**
+ * In accordance with the people's keys this will encrypt the data once and
+ * return a list of len(people) keys, one for each user.  The key is unlocked
+ * by their using their private key.
+ * msg = decrypt(msg, decrypt(key, private))
+ */
+function encrypt(data, people) {
+    //data: the data that is encrypted
+    //people: array containing the public keys of n people
+    //returns: 
+    var keys = [];
+    //NOT SECURE :P
+    var msg_key = "0";
+    for (var i = 0; i < people.length; ++i) {
+        keys.push(sjcl.encrypt(people[i], msg_key));
+    }
+    return {"data": sjcl.encrypt(msg_key, data),
+            "keys": keys, "key": msg_key};
+}
+
+function update() {
+    var i = 1;
+    var rec = {id: '000'};
+    records = [];
+    table.data().each(function(value, row, column) {
+        row = value;
+        //who can access the data
+        var accessors = $(".view-select").slice(i, i+1).val();
+        row['access'] = accessors;
+        var encrypted = encrypt(row['value'], accessors);
+        var encryptedData = encrypted.data;
+        var keys = encrypted.keys;
+        row['keys'] = keys;
+        row['encryptedData'] = encryptedData;
+        row['key'] = encrypted.key;
+        i += 1;
+        records.push(row);
+    });
+    console.log(records);
+}
 </script>
 
 </html>

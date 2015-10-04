@@ -26,5 +26,19 @@ def get_patient():
     resp = Response(json.dumps(patient),status=200, mimetype='application/json')
     return resp
 
+@app.route('/access', methods=['POST'])
+def update_access():
+    record = int(json.loads(request.form['record']))
+    people = json.loads(request.form['access'])
+    keys = json.loads(request.form['keys'])
+    from_mongo = db.patients.find_one()
+    people = sorted(list(set( list(people) + ['patient', 'physician'])))
+    from_mongo['records'][record]['access'] = people
+    x = from_mongo
+    patients.update({'_id': x['_id']}, {"$set": x}, upsert=False)
+    #$.ajax({method: "POST", url: "http://localhost:5000/rekey",
+    #data:JSON.stringify({"access": [1,2,3], "record": 0})})
+    return ""
+
 if __name__ == '__main__':
     app.run(debug=True)
