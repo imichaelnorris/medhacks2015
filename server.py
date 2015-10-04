@@ -28,6 +28,11 @@ def get_patient():
 
 @app.route('/access', methods=['POST'])
 def update_access():
+    #print(
+    rec = json.loads(request.form)
+    print(rec.keys())
+    #for row in rec[:
+    #    print row
     record = int(json.loads(request.form['record']))
     people = json.loads(request.form['access'])
     keys = json.loads(request.form['keys'])
