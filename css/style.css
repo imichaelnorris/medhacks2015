@@ -1,26 +1,23 @@
 /* Custom Stylesheet */
 
-nav .brand-logo {
-  color: #ffffff;
-}
-
-#nav_item {
-    background-color: #008E7f;
-}
-
 body {
-    background-color: #98D8D1;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+    margin: 20px 80px;   
 }
 
-
-main {
-    flex: 1 0 auto;
+header h1 {
+    font-family: 'PT Sans', sans-serif;
+    font-style: italic;
 }
 
-#footer_elem {
-    background-color : #008E7f;
+#logo {
+    height: auto; 
+    width: auto; 
+    max-width: 350px; 
+    max-height: 350px;
 }
-      
+#update{
+    width: 90px;
+    height: 40px;
+    display:block;
+    float: right;
+}   
