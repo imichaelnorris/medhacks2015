@@ -28,12 +28,12 @@ $(document).ready(function() {
                         }
                     }
                     if (!canAccess) {
-                        return "X";
+                        //return "X";
                     }
                     if (row.type === 'text') {
                         return row.value;
                     } else if (row.type === 'img') {
-                        return '<img src="data:image/png;base64,' + 
+                        return '<img height="100" width="100" src="data:image/png;base64,' + 
                         row.value + '" alt="IMG"/>';
                     } else {
                         return "INVALID RECORD TYPE";
@@ -90,6 +90,7 @@ function update() {
         records.push(row);
     });
     rec['records'] = records;
-    $.ajax({url: "http://localhost:5000/access", type:"POST", data: rec});
-    console.log(records);
+    rec = JSON.stringify(rec);
+    $.ajax({contentType: "application/json", url: "http://localhost:5000/access", type:"POST", data: rec});
+    //console.log(rec);
 }
