@@ -64,13 +64,12 @@ $(document).ready(function() {
                     if (!found) { return 'X'; }
                     if (found && row['encrypted']) {
                         try {
-                            console.log(context);
                             if (row['index'] == 0) {
-                                console.log(public_key);
+                                //console.log(public_key);
                             }
                             var key = sjcl.decrypt(context, public_key);
                         } catch (err) {
-                            console.log(row['index']);
+                            //console.log(row['index']);
                             console.log("err");
                             return 'X';
                         }
@@ -150,7 +149,7 @@ function update() {
                 temp = sjcl.decrypt('patient', row.keys[0]);
                 temp = sjcl.decrypt(temp, row['value']);
             } catch (err) {
-                console.log("could not decrypt patient data");
+                //console.log("could not decrypt patient data");
                 temp = row['value'];
             }
         }
@@ -166,6 +165,10 @@ function update() {
     rec['records'] = records;
     rec['encrypted'] = true;
     rec = JSON.stringify(rec);
-    $.ajax({contentType: "application/json", url: "http://localhost:5000/access", type:"POST", data: rec});
-    table.ajax.reload();
+    $.ajax({contentType: "application/json", url:
+        "http://localhost:5000/access", type:"POST", data: rec, 
+        success: function() {
+            table.ajax.reload();
+        }
+    });
 }
