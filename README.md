@@ -1,4 +1,28 @@
 # medhacks2015
+[http://wecrypthealth.com/](http://wecrypthealth.com/)
+[alternative link](http://disagree.io/)
+Elevator Pitch:
+We believe patients should have control of their own medical data.  This means,
+among other empowering tools, giving them tools to share their records with 
+medical researchers.
+
+We have created a web service which does two things well: it allows a patient to
+allow parts of their records to only be visible by certain groups, and it also
+encrypts your records in your browser using your own key before the records
+reach our servers.
+
+If you have heart disease, you may want to not share it with your employer.  No
+worries.  With We Crypt Health, your data is encrypted in the browser before it
+reaches our server.
+
+You share your data with physicians, pharmacists, medical researchers, and
+public health officlas by encrypting your data with their public keys.  This
+enables them to read your data, but if it's stolen before it reaches the
+intended target, then your attacker is left with an encrypted blob.
+
+We never touch unencrypted data which means your data is safe in our hands.
+
+
 README
 
 Patients choose who their data is shared with, by selecting which researchers
